@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Parent</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/purecss@1.0.0/build/pure-min.css"
+      integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w"
+      crossorigin="anonymous"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body
+    style="background-color: green; font-family: 'Courier New', Courier, monospace; padding: 20px"
+  >
+    <div>
+      <span style="color: white; float: right; font-size: 20px"
+        >Intermediate Layer</span
+      >
+
+      <table
+        id="messageTable"
+        class="pure-table pure-table-horizontal"
+        ;
+        style="background-color: white; "
+      >
+        <div style="color: white; margin-bottom: 20px">
+          Messages received by Child
+        </div>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Timestamp</th>
+            <th>Message</th>
+          </tr>
+        </thead>
+
+        <tbody></tbody>
+      </table>
+
+      <div>
+        <div style="margin:100px 0px 10px; color: white">
+          Send message to Child
+        </div>
+
+        <input id="messageData" type="text" placeholder="message" />
+
+        <button class="pure-button pure-button-primary" onclick="sendMessage()">
+          SEND
+        </button>
+      </div>
+
+      <iframe
+        id="iframe"
+        title="child "
+        src="./child.html"
+        style="margin: 100px 0px; width: 80%; height: 500px"
+      ></iframe>
+    </div>
+  </body>
+  <script>
+    var table = document.getElementById('messageTable');
+    var counter = 0;
+    window.addEventListener('message', receiveMessage, false);
+
+    function receiveMessage(event) {
+      var row = table.insertRow(counter + 1);
+
+      var number = row.insertCell(0);
+      var moment = row.insertCell(1);
+      var message = row.insertCell(2);
+
+      number.innerHTML = counter++;
+      moment.innerHTML = new Date().toLocaleTimeString();
+      message.innerHTML = event.data;
+      window.webkit &&
+        window.webkit.messageHandlers.iframeData.postMessage(event.data);
+    }
+
+    function sendMessage(message) {
+      message = message
+        ? message
+        : document.getElementById('messageData').value;
+      document
+        .getElementById('iframe')
+        .contentWindow.postMessage(
+          document.getElementById('messageData').value
+        );
+    }
+  </script>
+</html>
