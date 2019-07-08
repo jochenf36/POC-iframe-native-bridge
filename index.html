@@ -79,7 +79,8 @@
       moment.innerHTML = new Date().toLocaleTimeString();
       message.innerHTML = event.data;
       window.webkit &&
-        window.webkit.messageHandlers.jsHandler.postMessage(event.data);
+        window.webkit.messageHandlers.jsHandler.postMessage(event.data, '*');
+      parent.postMessage(event.data, "*");
     }
 
     function sendMessage(message) {
