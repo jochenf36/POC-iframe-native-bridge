@@ -68,7 +68,10 @@
     }
 
     function sendMessage() {
-      window.parent.postMessage(document.getElementById('messageData').value);
+      window.parent.postMessage(
+        document.getElementById('messageData').value,
+        '*'
+      );
     }
   </script>
 </html>
